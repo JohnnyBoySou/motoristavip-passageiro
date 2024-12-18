@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "87455959272",
+    "project_id": "motorista-vip-10",
+    "storage_bucket": "motorista-vip-10.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:87455959272:android:3d29e18b92fc3e106ba15d",
+        "android_client_info": {
+          "package_name": "app.motorista.vip"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBcAh7qHEx_isW5pek23kkmrVGEx0BQGyo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,52 @@
+{
+  "expo": {
+    "name": "Motorista Vip - Passageiro",
+    "slug": "motorista_vip",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "newArchEnabled": "true",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#002333"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "plugins": [
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Permitir que Motorista Vip use sua localização.",
+          "locationAlwaysPermission": "Permitir que Motorista Vip use sua localização.",
+          "locationWhenInUsePermission": "Permitir que Motorista Vip use sua localização.",
+          "isIosBackgroundLocationEnabled": true
+        }
+      ],
+      "expo-font",
+      "expo-asset"
+    ],
+    "ios": {
+      "infoPlist": {
+        "NSLocationAlwaysUsageDescription": "Este aplicativo usa a localização para rastrear a posição atual do pedido",
+        "NSLocationWhenInUseUsageDescription": "Este aplicativo usa a localização para rastrear a posição do pedido"
+      },
+      "bundleIdentifier": "app.motorista.passageiro.vip",
+      "supportsTablet": false,
+      "buildNumber": "1.0"
+    },
+    "android": {
+      "package": "app.motorista.passageiro.vip",
+      "versionCode": 1,
+      "permissions": [
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.FOREGROUND_SERVICE"
+      ]
+    }
+  }
+}
