@@ -12,6 +12,7 @@ import { AddAddress, CompleteAddress } from "../screens/AddAddress";
 import Home from '../screens/Home';
 import FindDriver from "../screens/FindDriver";
 import Profile from "../screens/Profile";
+import Onboarding from "../screens/Onboarding";
 
 import Cart from "../screens/Cart";
 import SelectAddress from "../screens/SelectAddress";
@@ -28,6 +29,14 @@ export default function PublicStack() {
     return (
         <Stack.Navigator initialRouteName="Loading">
             <Stack.Screen
+                name="Onboarding"
+                component={Onboarding}
+                options={{
+                    headerShown: false,
+                    ...TransitionPresets.ModalSlideFromBottomIOS,
+                 }}
+            />
+            <Stack.Screen
                 name="Loading"
                 component={Loading}
                 options={{
@@ -37,8 +46,21 @@ export default function PublicStack() {
             <Stack.Screen
                 name="Profile"
                 component={Profile}
-                options={{  headerShown: false, 
-                    ...TransitionPresets.SlideFromRightIOS }}
+                options={{
+                    headerShown: true,
+                    headerMode: "screen",
+                    header: ({ navigation, scene }) => (
+                        <Block row style={{  alignItems: 'center', paddingHorizontal: 20, paddingTop: Platform.OS === 'ios' ? 50 : 20, paddingBottom: Platform.OS === 'ios' ? 20 : 0, }}>
+                            <TouchableOpacity onPress={() => { navigation.goBack() }} style={{ width: 48, height: 48, justifyContent: 'center', alignItems: 'center', backgroundColor: argonTheme.COLORS.PRIMARY, borderRadius: 100, }} >
+                                <AntDesign name="arrowleft" size={24} color="#fff" />
+                            </TouchableOpacity>
+                            <Text size={20} color='#000' bold style={{ marginLeft: 18 }} >Meu Perfil</Text>
+                        </Block>
+                    ),
+                    headerTransparent: true,
+                    ...TransitionPresets.SlideFromRightIOS,
+                    cardStyle: { backgroundColor: "#F8F9FE" }
+                }}
             />
             <Stack.Screen
                 name="FindDriver"
@@ -56,12 +78,15 @@ export default function PublicStack() {
                     headerShown: true,
                     headerMode: "screen",
                     header: ({ navigation, scene }) => (
-                        <Block row style={{ backgroundColor: argonTheme.COLORS.PRIMARY, alignItems: 'center', paddingHorizontal: 20, paddingTop: Platform.OS === 'ios' ? 50 : 20, paddingBottom: Platform.OS === 'ios' ? 20 : 20, }}>
-                            <Text size={20} color='#fff' bold >Entrar</Text>
-                        </Block>
+                        <Block row style={{ backgroundColor: '#fff', alignItems: 'center', paddingHorizontal: 20, paddingTop: Platform.OS === 'ios' ? 50 : 20, paddingBottom: Platform.OS === 'ios' ? 20 : 0, }}>
+                        <TouchableOpacity onPress={() => { navigation.goBack() }} style={{ width: 48, height: 48, justifyContent: 'center', alignItems: 'center', backgroundColor: argonTheme.COLORS.PRIMARY, borderRadius: 100, }} >
+                            <AntDesign name="arrowleft" size={24} color="#fff" />
+                        </TouchableOpacity>
+                        <Text size={20} color={argonTheme.COLORS.PRIMARY} bold style={{ marginLeft: 18 }} >Entrar</Text>
+                    </Block>
                     ),
                     headerTransparent: true,
-                    ...TransitionPresets.SlideFromRightIOS,
+                    ...TransitionPresets.ModalSlideFromBottomIOS,
                     cardStyle: { backgroundColor: "#F8F9FE" }
                 }}
             />
@@ -72,11 +97,11 @@ export default function PublicStack() {
                     headerShown: true,
                     headerMode: "screen",
                     header: ({ navigation, scene }) => (
-                        <Block row style={{ backgroundColor: argonTheme.COLORS.PRIMARY, alignItems: 'center', paddingHorizontal: 20, paddingTop: Platform.OS === 'ios' ? 50 : 20, paddingBottom: Platform.OS === 'ios' ? 20 : 0, }}>
-                            <TouchableOpacity onPress={() => { navigation.goBack() }} style={{ width: 48, height: 48, justifyContent: 'center', alignItems: 'center', backgroundColor: '#FFFfff30', borderRadius: 100, }} >
+                        <Block row style={{ backgroundColor: '#fff', alignItems: 'center', paddingHorizontal: 20, paddingTop: Platform.OS === 'ios' ? 50 : 20, paddingBottom: Platform.OS === 'ios' ? 20 : 0, }}>
+                            <TouchableOpacity onPress={() => { navigation.goBack() }} style={{ width: 48, height: 48, justifyContent: 'center', alignItems: 'center', backgroundColor: argonTheme.COLORS.PRIMARY, borderRadius: 100, }} >
                                 <AntDesign name="arrowleft" size={24} color="#fff" />
                             </TouchableOpacity>
-                            <Text size={20} color='#fff' bold style={{ marginLeft: 18 }} >Criar conta</Text>
+                            <Text size={20} color={argonTheme.COLORS.PRIMARY} bold style={{ marginLeft: 18 }} >Criar conta</Text>
                         </Block>
                     ),
                     headerTransparent: true,

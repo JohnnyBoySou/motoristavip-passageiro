@@ -9,16 +9,21 @@ import { argonTheme } from '../constants';
 import { MotiImage, MotiView } from 'moti';
 
 export default function Loading({ navigation }) {
-
+  const isFocused = navigation.isFocused();
   useEffect(() => {
     const auth = async () => {
-      //const userToken = await AsyncStorage.getItem('token');
-      //navigation.navigate(userToken ? 'SignedIn' : 'SignedOut');
-      navigation.replace('Home');
+      try {
+        const userToken = await AsyncStorage.getItem('token');
+        const telefone = await AsyncStorage.getItem('phone');
+        if (userToken || telefone) {
+          navigation.replace('Home');
+        }
+      } catch (error) {
+        navigation.replace('Onboarding');        
+      }
     };
-
     auth();
-  }, []);
+  }, [isFocused]);
 
   return (
     <View style={{ backgroundColor: argonTheme.COLORS.PRIMARY, justifyContent: 'center', alignItems: 'center',  flex: 1, }}>

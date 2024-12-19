@@ -47,6 +47,12 @@
         "android.permission.ACCESS_FINE_LOCATION",
         "android.permission.FOREGROUND_SERVICE"
       ]
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "6990f02e-4dbc-43f0-88f7-225b62f0fce5"
+      }
+    },
+    "owner": "joaosousa"
   }
 }

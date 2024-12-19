@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import MapView, { Marker } from 'react-native-maps';
-import { Animated, ScrollView, Dimensions, View, TouchableOpacity, StatusBar, Platform, FlatList } from 'react-native';
+import { Animated, ScrollView, Dimensions, View, TouchableOpacity, StatusBar, Platform, FlatList, TextInput } from 'react-native';
 import { Block, Text, theme, Button } from 'galio-framework'
 const { width, height } = Dimensions.get('screen');
 import PlacesInput from 'react-native-places-input';
@@ -9,19 +9,20 @@ import { Input } from '../components'
 import API from '../services/api'
 import { AntDesign, Feather, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import Avatar from '../components/Avatar';
-import { FadeInUp, FadeOutDown } from 'react-native-reanimated';
 import { AnimatePresence, MotiView } from 'moti';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Home({ navigation }) {
     const [placesStart, setPlacesStart] = useState([]);
     const [placesEnd, setPlacesEnd] = useState([]);
-
-    const [region, setRegion] = useState(null);
+    
     const [nameStart, setnameStart] = useState('Local de embarque');
     const [nameEnd, setnameEnd] = useState('Local de entrega');
     const [searchStart, setsearchStart] = useState(false);
     const [searchEnd, setsearchEnd] = useState(false);
+    const [phone, setphone] = useState();
 
+    const [user, setuser] = useState();
 
     const handleRide = () => {
         if(placesStart.length == 0 || placesEnd.length == 0) return;
@@ -32,10 +33,9 @@ export default function Home({ navigation }) {
             lat2: placesEnd[0].result.geometry.location.lat,
             lng2: placesEnd[0].result.geometry.location.lng,
             fa2: placesEnd[0].result.formatted_address,
-
+            phone: phone,
         })
     }
-
     const ModalStart = () => {
         return (
             <MotiView from={{ translateY: height }} animate={{ translateY: 0, }} exit={{ translateY: height, }} transition={{ type: 'timing', duration: 500, }} style={{ backgroundColor: argonTheme.COLORS.PRIMARY,  position: 'absolute', top: 0, width: width, height: height,  }}>
@@ -45,6 +45,7 @@ export default function Home({ navigation }) {
                             <AntDesign name="arrowleft" size={24} color="#fff" />
                         </TouchableOpacity>
                         <Text style={{ fontSize: 28, marginVertical: 12, fontFamily: 'Inter_700Bold', color: '#FFF', lineHeight: 30, marginHorizontal: 20, }}>Insira seu local de embarque</Text>
+                        
                         <View style={{ marginHorizontal: 12, }}>
                             <PlacesInput
                                 queryTypes="address"
@@ -60,12 +61,6 @@ export default function Home({ navigation }) {
                                 searchLongitude={-49.0687411}
                                 onSelect={(place) => {
                                     setPlacesStart([place]);
-                                    setRegion({
-                                        latitude: place.result.geometry.location.lat,
-                                        longitude: place.result.geometry.location.lng,
-                                        latitudeDelta: 0.008,
-                                        longitudeDelta: 0.009,
-                                    });
                                     setnameStart(place.result.formatted_address);
                                     setsearchStart(false);
                                 }}
@@ -101,12 +96,6 @@ export default function Home({ navigation }) {
                                 searchLongitude={-49.0687411}
                                 onSelect={(place) => {
                                     setPlacesEnd([place]);
-                                    setRegion({
-                                        latitude: place.result.geometry.location.lat,
-                                        longitude: place.result.geometry.location.lng,
-                                        latitudeDelta: 0.008,
-                                        longitudeDelta: 0.009,
-                                    });
                                     setnameEnd(place.result.formatted_address);
                                     setsearchEnd(false);
                                 }}
@@ -118,7 +107,16 @@ export default function Home({ navigation }) {
         )
     }
 
-
+    useEffect(() => {
+        const auth = async () => {
+          try {
+              const userToken = await AsyncStorage.getItem('token');
+              setuser(userToken)
+          } catch (error) {
+          }
+        };
+        auth();
+      }, []);
 
     return (
         <>
@@ -131,10 +129,7 @@ export default function Home({ navigation }) {
                             <Avatar bg="#fff" />
                         </TouchableOpacity>
                     </View>
-
-
                     <View style={{ borderWidth: 2, rowGap: 18, marginTop: 30, marginBottom: 10, overflow: 'hidden', paddingTop: 20, borderRadius: 16, backgroundColor: argonTheme.COLORS.PRIMARY, paddingHorizontal: 20, }}>
-
                         <View style={{ width: 3, height: 50, position: 'absolute', top: 80, left: 46, borderStyle: 'dashed', borderWidth: 2, borderColor: '#fff', }} />
                         <View style={{ flexDirection: 'row' }}>
                             <View style={{ backgroundColor: '#fff', width: 56, height: 56, justifyContent: 'center', alignItems: 'center', borderRadius: 100, }}>
@@ -144,7 +139,6 @@ export default function Home({ navigation }) {
                                 <Text style={{ color: '#d1d1d1', width: 190, marginLeft: 12, fontSize: 14, lineHeight: 18, fontFamily: 'Inter_400Regular' }}>{nameStart.length > 44 ? nameStart.slice(0, 44) + '...' : nameStart}</Text>
                             </TouchableOpacity>
                         </View>
-
                         <View style={{ flexDirection: 'row' }}>
                             <View style={{ backgroundColor: '#334F5C', width: 56, height: 56, justifyContent: 'center', alignItems: 'center', borderRadius: 100, }}>
                                 <Feather name="map-pin" size={20} color='#FFF' />
@@ -160,19 +154,15 @@ export default function Home({ navigation }) {
                             </Text>
                         </TouchableOpacity>
                     </View>
-
                     <View style={{ marginVertical: 20, }}>
                         <Text style={{ fontSize: 20, fontFamily: 'Inter_600SemiBold', color: argonTheme.COLORS.PRIMARY, lineHeight: 24, }}>Minhas corridas</Text>
                         <FlatList horizontal showsHorizontalScrollIndicator={false}
                             style={{ marginHorizontal: -20, marginVertical: 20, }}
                             contentContainerStyle={{ columnGap: 12, paddingLeft: 20, paddingRight: 20, }}
-                            data={data} keyExtractor={item => item.id} renderItem={({ item }) => <CardOrder item={item} />} />
+                            ListEmptyComponent={<EmptyOrders />}
+                            data={user ? data : null} keyExtractor={item => item.id} renderItem={({ item }) => <CardOrder item={item} />} />
                     </View>
                 </View>
-
-
-
-
             </ScrollView>
             <AnimatePresence>{searchStart && <ModalStart />}</AnimatePresence>
             <AnimatePresence>{searchEnd && <ModalEnd />}</AnimatePresence>
@@ -180,6 +170,15 @@ export default function Home({ navigation }) {
     )
 }
 
+const EmptyOrders = () => {
+    return (
+        <View style={{ borderRadius: 12, backgroundColor: argonTheme.COLORS.PRIMARY + 20, padding: 20, width: 200, }}>
+            <Ionicons name="car-sport" size={32} color={argonTheme.COLORS.PRIMARY} />
+            <Text style={{ fontFamily: 'Inter_700Bold', fontSize: 18, color: argonTheme.COLORS.PRIMARY, lineHeight: 18, marginVertical: 6, }}>Você ainda não fez nenhuma corrida.</Text>
+            <Text style={{ fontFamily: 'Inter_500Medium', fontSize: 14, color: argonTheme.COLORS.PRIMARY+99 }}>Solicite uma nova preenchendo os dados acima.</Text>
+            
+    </View>
+)}
 
 const CardOrder = ({ item }) => {
     //<Text style={{ fontSize: 16, fontFamily: 'Inter_600SemiBold', color: argonTheme.COLORS.PRIMARY, lineHeight: 22, }}>{item?.name.length > 12 ? item.name.slice(0, 12) + '...' : item.name}</Text>

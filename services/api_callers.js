@@ -2,7 +2,7 @@ import config from '../config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 async function authAPI(method,path,data,callback,errorCallback){
-    var token = await AsyncStorage.getItem('token');
+  var token = await AsyncStorage.getItem('token');
     var link=config.domain+'/api/v2/'+path+'?api_token='+token;
     var sendParam={
         method: method,
@@ -55,8 +55,6 @@ async function publicAPI(method,path,data,callback,errorCallback){
   if(method=="POST"){
       sendParam.body=JSON.stringify(data);
   }
-  console.log(link);
-  console.log(sendParam);
   fetch(link, sendParam).then((response) => response.json()).then((responseJson) => {
    if(responseJson.status){
     callback(responseJson.data?responseJson.data:responseJson);

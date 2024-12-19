@@ -7,21 +7,24 @@ import {
   TouchableOpacity,
   View,
   Linking,
+  StatusBar,
 } from "react-native";
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Block, Text, theme } from "galio-framework";
 import { AntDesign } from '@expo/vector-icons';
 import { Language, argonTheme } from "../constants";
-import { HeaderHeight } from "../constants/utils";
 import AuthContext from './../store/auth'
 import Fancy from "./../components/Fancy"
 import API from "./../services/api"
 
+import Avatar from "components/Avatar";
+import Button from "@theme/button";
+
 const { width, height } = Dimensions.get("screen");
 const thumbMeasure = (width - 48 - 32) / 3;
 
-export default function Profile() {
+export default function Profile({ navigation }) {
   const [user, setuser] = useState();
   async function getCurrentUser() {
     var userJSON = await AsyncStorage.getItem('user');
@@ -36,30 +39,38 @@ export default function Profile() {
 
   const [deleteModal, setdeleteModal] = useState(false);
 
-  const Avatar = () => {
-    if (user?.avatar) {
-      return <Image source={{ uri: user?.avatar }} style={{ width: 150, height: 150, borderRadius: 100, backgroundColor: '#f1f1f1', alignSelf: 'center' }} />
-    }
-    return (<View style={{ width: 150, height: 150, backgroundColor: '#f1f1f1', justifyContent: 'center', alignItems: 'center', borderRadius: 100, alignSelf: 'center' }}>
-      <AntDesign
-        name="user"
-        style={{ textAlign: 'center' }}
-        size={82}
-        color={argonTheme.COLORS.PRIMARY}
-      />
-    </View>
-    )
-  }
-
   const openTerms = () => {
     Linking.openURL('https://motorista.vip/termos')
   }
 
+  if (!user) {
+    return (
+      <View style={{ justifyContent: 'center', flex: 1,paddingHorizontal: 20,backgroundColor: '#f1f1f1',}}>
+        <StatusBar backgroundColor='#f1f1f1' barStyle={"dark-content"} />
+        <View style={{ justifyContent: 'center', alignItems: 'center', }}>
+          <Avatar bg={argonTheme.COLORS.PRIMARY} w={150} h={150} size={72} cl='#fff' />
+        </View>
+        <Text style={{ fontSize: 22, marginVertical: 12, fontFamily: 'Inter_700Bold', color: argonTheme.COLORS.PRIMARY, textAlign: 'center', lineHeight: 24, }}>Faça login para acessar seu perfil</Text>
+        <View style={{ backgroundColor: argonTheme.COLORS.PRIMARY+20, padding: 12, borderRadius: 12, marginVertical: 12, }}>
+          <Text style={{ fontFamily: 'Inter_500Medium', fontSize: 16, lineHeight: 22, color: argonTheme.COLORS.PRIMARY, }}>
+          - Acompanhe suas corridas {'\n'}
+          - Acesse seus dados {'\n'}
+          - Acesse seus cupons {'\n'}
+          - Acesse seus pontos {'\n'}
+        </Text>
+        </View>
+        <View style={{ rowGap: 16, marginTop: 12, }}> 
+          <Button onPress={() => { navigation.navigate('Login') }} variant='secundary' text="Entrar" />
+          <Button onPress={openTerms} variant="ghost2" text='Acessar termos de uso' />
+        </View>
+      </View>
+    )
+  }
 
   return (
-    <Block flex style={{ backgroundColor: argonTheme.COLORS.PRIMARY, }}>
+    <Block flex style={{ backgroundColor: '#f1f1f1', }}>
       <ScrollView>
-        <Block flex style={styles.profileCard}>
+        <View style={{ marginHorizontal: 20, }}>
           <AuthContext.Consumer>
             {({ signOut }) => (
               <Fancy
@@ -95,11 +106,8 @@ export default function Profile() {
                 </TouchableOpacity>
                 )}
               </AuthContext.Consumer>
-              <TouchableOpacity style={{ backgroundColor: argonTheme.COLORS.PRIMARY+20, justifyContent: 'center', alignItems: 'center', paddingVertical: 12, borderRadius: 8, }} onPress={openTerms}>
-                <Text size={16} bold style={{ textAlign: "center", color: argonTheme.COLORS.PRIMARY, }}>
-                  Acessar termos de uso
-                </Text>
-              </TouchableOpacity>
+              
+              <Button onPress={openTerms} variant="ghost2" text='Acessar termos de uso' />
               <TouchableOpacity style={{ backgroundColor: '#ff000020', justifyContent: 'center', alignItems: 'center', paddingVertical: 12, borderRadius: 8, }} onPress={() => { setdeleteModal(true) }}>
                 <Text size={16} bold style={{ textAlign: "center", color: "red", }}>
                   {Language.deleteAccount}
@@ -107,7 +115,7 @@ export default function Profile() {
               </TouchableOpacity>
             </Block>
           </Block>
-        </Block>
+        </View>
       </ScrollView>
     </Block>
   );

@@ -17,6 +17,9 @@ import AuthContext from './../store/auth'
 import { Feather } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+import Button from '@theme/button'
+import { View } from "moti";
+
 export default function Register({ navigation }) {
   const [email, setemail] = useState();
   const [password, setpassword] = useState();
@@ -24,8 +27,8 @@ export default function Register({ navigation }) {
   const [name, setname] = useState();
   return (
     <SafeAreaView style={{ flex: 1, }}>
-      <ScrollView style={{ backgroundColor: argonTheme.COLORS.PRIMARY, paddingTop: 80, }}>
-        <StatusBar backgroundColor={argonTheme.COLORS.PRIMARY} barStyle={"light-content"} />
+      <ScrollView style={{ backgroundColor: '#fff', paddingTop: 80, }}>
+        <StatusBar backgroundColor='#fff' barStyle={"dark-content"} />
         <Block flex middle>
           <Block style={styles.registerContainer}>
             <Block flex>
@@ -33,7 +36,7 @@ export default function Register({ navigation }) {
                 <Image source={require('../assets/icon.png')} style={{ width: 124, height: 124, objectFit: 'contain', backgroundColor: '#d1d1d1', alignSelf: 'center', borderRadius: 12, marginBottom: 12, }} />
                 <Text bold size={18} center>motorista<Text bold size={18} center color='#10B981'>.</Text>vip</Text>
               </Block>
-              <Block flex style={{ marginHorizontal: 20, marginTop: 24, }}>
+              <Block flex style={{ marginHorizontal: 20, marginTop: 24, rowGap: 6, }}>
                 <Input
                   value={name}
                   borderless
@@ -44,7 +47,6 @@ export default function Register({ navigation }) {
                   }
                   style={{ borderWidth: 1, borderColor: argonTheme.COLORS.INPUT }}
                 />
-
                 <Input
                   value={phone}
                   borderless
@@ -56,7 +58,6 @@ export default function Register({ navigation }) {
                   }
                   style={{ borderWidth: 1, borderColor: argonTheme.COLORS.INPUT }}
                 />
-
                 <Input
                   value={email}
                   borderless
@@ -68,7 +69,6 @@ export default function Register({ navigation }) {
                   }
                   style={{ borderWidth: 1, borderColor: argonTheme.COLORS.INPUT }}
                 />
-
                 <Input
                   value={password}
                   password
@@ -80,18 +80,14 @@ export default function Register({ navigation }) {
                   }
                   style={{ borderWidth: 1, borderColor: argonTheme.COLORS.INPUT }}
                 />
-
-                <AuthContext.Consumer>
-                  {({ signUp }) => (
-                    <TouchableOpacity style={{ backgroundColor: argonTheme.COLORS.PRIMARY, marginTop: 15, justifyContent: 'center', alignItems: 'center', paddingVertical: 12, borderRadius: 8, width: '100%' }} onPress={() => signUp({ email: email, password: password, name: name, phone: phone })} >
-                      <Text bold size={16} color={argonTheme.COLORS.WHITE} center>Criar conta</Text>
-                    </TouchableOpacity>
-
-                  )}
-                </AuthContext.Consumer>
-                <TouchableOpacity style={{ borderColor: argonTheme.COLORS.PRIMARY, justifyContent: 'center', marginTop: 16, alignItems: 'center', paddingVertical: 10, borderRadius: 8, borderWidth: 2, marginHorizontal: 1, }} onPress={() => navigation.navigate('Login')} >
-                  <Text bold size={16} color={argonTheme.COLORS.PRIMARY} center>Entrar</Text>
-                </TouchableOpacity>
+                <View style={{ rowGap: 16, }}>
+                  <AuthContext.Consumer>
+                    {({ signUp }) => (
+                      <Button text='Criar conta' variant="secundary" onPress={() => signUp({ email: email, password: password, name: name, phone: phone })} />
+                    )}
+                  </AuthContext.Consumer>
+                  <Button text='Entrar' onPress={() => navigation.navigate('Login')} variant="ghost2" />
+                </View>
               </Block>
             </Block>
           </Block>
@@ -99,7 +95,6 @@ export default function Register({ navigation }) {
         <Block style={{ height: 120, }} />
       </ScrollView>
     </SafeAreaView>
-
   );
 }
 

@@ -13,7 +13,8 @@ import {
 import config from '../config';
 import { Block, Text } from "galio-framework";
 
-import { Button, Icon, Input } from "../components";
+import Button  from '@theme/button'
+import { Input } from "../components";
 import { Images, argonTheme, Language } from "../constants";
 
 const { width, height } = Dimensions.get("screen");
@@ -82,61 +83,61 @@ const Login = ({ navigation }) => {
   }, []);
 
 
+  const handleLogin = () => {
+    signIn({ email: email, password: password, expoPushToken: expoPushToken })
+  }
+
   return (
-    <SafeAreaView style={{ flex: 1, }}>
-    <ScrollView style={{ backgroundColor: argonTheme.COLORS.PRIMARY, paddingTop: 110, }}>
-      <StatusBar backgroundColor={argonTheme.COLORS.PRIMARY} barStyle={"light-content"} />
-      <Block flex middle >
-        <Block style={styles.registerContainer}>
-          <Block flex >
-            <Block >
-              <Image source={require('../assets/icon.png')} style={{ width: 124, height: 124, objectFit: 'contain', backgroundColor: '#d1d1d1', alignSelf: 'center', borderRadius: 12, marginBottom: 12, }} />
-              <Text bold size={18} center>motorista<Text bold size={18} center color='#10B981'>.</Text>vip</Text>
-            </Block>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#fff',}}>
+      <ScrollView style={{ paddingTop: 110, }}>
+        <StatusBar backgroundColor='#FFF' barStyle={"dark-content"} />
+        <Block flex middle >
+          <Block style={styles.registerContainer}>
             <Block flex >
-              <Block style={{ marginHorizontal: 20, marginTop: 24, }}>
-                <Input
-                  value={email}
-                  borderless
-                  onChangeText={text => setEmail(text)}
-                  placeholder={"E-mail"}
-                  keyboardType="email-address"
-                  iconContent={<Feather name="mail" size={18} style={{ marginRight: 6, }} color={argonTheme.COLORS.ICON} />}
-                  style={{ borderWidth: 1, borderColor: argonTheme.COLORS.INPUT }}
-                />
-                <Input
-                  value={password}
-                  password
-                  borderles
-                  placeholder={Language.password}
-                  onChangeText={text => setPassword(text)}
-                  iconContent={
-                    <Feather name="lock" size={18} style={{ marginRight: 6, }} color={argonTheme.COLORS.ICON} />
-                  }
-                  style={{ borderWidth: 1, borderColor: argonTheme.COLORS.INPUT }}
-                />
+              <Block >
+                <Image source={require('../assets/icon.png')} style={{ width: 124, height: 124, objectFit: 'contain', backgroundColor: '#d1d1d1', alignSelf: 'center', borderRadius: 12, marginBottom: 12, }} />
+                <Text bold size={18} center>motorista<Text bold size={18} center color='#10B981'>.</Text>vip</Text>
               </Block>
-              <TouchableOpacity style={{ alignSelf: 'flex-end', marginHorizontal: 10, marginBottom: 12, paddingVertical: 12, paddingHorizontal: 12, borderRadius: 5, }} onPress={() => Linking.openURL(config.domain + "/password/reset").catch(err => console.error("Couldn't load page", err))} >
-                <Text size={14} style={{ textDecorationLine: 'underline', textDecorationColor: argonTheme.COLORS.PRIMARY }} color={argonTheme.COLORS.PRIMARY}>
-                  Esqueceu sua senha?
-                </Text>
-              </TouchableOpacity>
-              <Block style={{ marginHorizontal: 20, }}>
-                <TouchableOpacity style={{ backgroundColor: argonTheme.COLORS.PRIMARY, justifyContent: 'center', alignItems: 'center', paddingVertical: 12, borderRadius: 8, }} onPress={() => signIn({ email: email, password: password, expoPushToken: expoPushToken })} >
-                  <Text bold size={16} color={argonTheme.COLORS.WHITE} center>Entrar</Text>
+              <Block flex >
+                <Block style={{ marginHorizontal: 20, marginTop: 24, }}>
+                  <Input
+                    value={email}
+                    borderless
+                    onChangeText={text => setEmail(text)}
+                    placeholder={"E-mail"}
+                    keyboardType="email-address"
+                    iconContent={<Feather name="mail" size={18} style={{ marginRight: 6, }} color={argonTheme.COLORS.ICON} />}
+                    style={{ borderWidth: 1, borderColor: argonTheme.COLORS.INPUT }}
+                  />
+                  <Input
+                    value={password}
+                    password
+                    borderles
+                    placeholder={Language.password}
+                    onChangeText={text => setPassword(text)}
+                    iconContent={
+                      <Feather name="lock" size={18} style={{ marginRight: 6, }} color={argonTheme.COLORS.ICON} />
+                    }
+                    style={{ borderWidth: 1, borderColor: argonTheme.COLORS.INPUT }}
+                  />
+                </Block>
+                <TouchableOpacity style={{ alignSelf: 'flex-end', marginHorizontal: 10, marginBottom: 12, paddingVertical: 12, paddingHorizontal: 12, borderRadius: 5, }} onPress={() => Linking.openURL(config.domain + "/password/reset").catch(err => console.error("Couldn't load page", err))} >
+                  <Text size={14} style={{ textDecorationLine: 'underline', textDecorationColor: argonTheme.COLORS.PRIMARY }} color={argonTheme.COLORS.PRIMARY}>
+                    Esqueceu sua senha?
+                  </Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={{ borderColor: argonTheme.COLORS.PRIMARY, justifyContent: 'center', marginTop: 16, alignItems: 'center', paddingVertical: 10, borderRadius: 8, borderWidth: 2, marginHorizontal: 1, }} onPress={() => navigation.navigate('Register')} >
-                  <Text bold size={16} color={argonTheme.COLORS.PRIMARY} center>Criar uma conta</Text>
-                </TouchableOpacity>
+                <Block style={{ marginHorizontal: 20, rowGap: 16, }}>
+                  <Button text='Entrar' onPress={handleLogin} variant="secundary"/>
+                  <Button text='Criar conta' onPress={() => navigation.navigate('Register')} variant="ghost2"/>
+                </Block>
               </Block>
             </Block>
           </Block>
         </Block>
-      </Block>
-      <Block style={{ height: 120, }} />
+        <Block style={{ height: 120, }} />
       </ScrollView>
     </SafeAreaView>
-      
+
   );
 };
 
