@@ -17,6 +17,6 @@
         "**/.env": true,
         "**/config.js": true,
         "**/eas.json": true,
-        "**/app.json": true,
+        "**/app.json": false,
     }
 }

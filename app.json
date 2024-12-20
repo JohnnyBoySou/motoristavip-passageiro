@@ -24,6 +24,8 @@
           "locationAlwaysAndWhenInUsePermission": "Permitir que Motorista Vip use sua localização.",
           "locationAlwaysPermission": "Permitir que Motorista Vip use sua localização.",
           "locationWhenInUsePermission": "Permitir que Motorista Vip use sua localização.",
+          "NSLocationWhenInUseUsageDescription": "Este aplicativo precisa acessar sua localização para buscar motoristas perto de você.",
+          "NSLocationAlwaysUsageDescription": "Este aplicativo precisa acessar sua localização continuamente para atualizar sua localização com o motorista.",
           "isIosBackgroundLocationEnabled": true
         }
       ],

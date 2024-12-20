@@ -1,8 +1,8 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
 export const findDriver = async (params) => {
   const { start, end, phone, app = true } = params;
-
   const url = 'https://motorista.vip/findtaxi';
   const queryParams = new URLSearchParams({
     start,
@@ -10,7 +10,6 @@ export const findDriver = async (params) => {
     phone,
     app
   }).toString();
-
   try {
     const response = await axios.get(`${url}?${queryParams}`);
     console.log('Find Taxi response:', response.data);
@@ -22,6 +21,8 @@ export const findDriver = async (params) => {
 };
 
 export const createOrder = async (params) => {
+  const userLogged = JSON.parse(await AsyncStorage.getItem('user'))
+  const userid = userLogged.id ? userLogged.id : '';
   const {
     issd,
     driver_id,
@@ -46,11 +47,12 @@ export const createOrder = async (params) => {
     delivery_lat,
     delivery_lng,
     pickup_lat,
-    pickup_lng
+    pickup_lng,
+    userid
   }).toString();
-    try {
+  console.log(url + queryParams)
+  try {
     const response = await axios.post(`${url}?${queryParams}`);
-    console.log('Order response:', response);
     return response.data;
   } catch (error) {
     console.error('Error creating order:', error.response?.data || error.message);

@@ -10,16 +10,16 @@ import {
   StatusBar,
 } from "react-native";
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Block, Text, theme } from "galio-framework";
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign, Feather } from '@expo/vector-icons';
 import { Language, argonTheme } from "../constants";
-import AuthContext from './../store/auth'
-import Fancy from "./../components/Fancy"
-import API from "./../services/api"
+import Fancy from "@components/Fancy"
 
-import Avatar from "components/Avatar";
+import Avatar from "@components/Avatar";
 import Button from "@theme/button";
+import Input from "@components/Input";
+import { getUser, logout } from "@api/auth";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const { width, height } = Dimensions.get("screen");
 const thumbMeasure = (width - 48 - 32) / 3;
@@ -27,10 +27,15 @@ const thumbMeasure = (width - 48 - 32) / 3;
 export default function Profile({ navigation }) {
   const [user, setuser] = useState();
   async function getCurrentUser() {
-    var userJSON = await AsyncStorage.getItem('user');
-    if (userJSON !== null) {
-      var parsedUser = JSON.parse(userJSON)
-      setuser(parsedUser)
+    try {
+      const res = await getUser();
+      setemail(res.email);
+      setphone(res.phone);
+      setname(res.name);
+      setuser(res);
+    } catch (error) {
+      console.log(error)
+      setuser(null)
     }
   }
   useEffect(() => {
@@ -43,76 +48,129 @@ export default function Profile({ navigation }) {
     Linking.openURL('https://motorista.vip/termos')
   }
 
-  if (!user) {
+ 
+
+  const handleDelete = async () => {
+    try {
+      await disableUser()
+      navigation.navigate('Onboarding');
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  const handleExit = async () => {
+    try {
+      await logout()
+      navigation.navigate('Onboarding');
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  const handleUpdate = () => {
+  }
+
+  const [phone, setphone] = useState();
+  const [email, setemail] = useState();
+  const [name, setname] = useState();
+
+  const emailRef = React.createRef();
+  const refphone = React.createRef();
+
+  const handlePhoneChange = (text) => {
+    let formattedText = text.replace(/[^\d]/g, '');
+    if (formattedText.length > 10) {
+      formattedText = formattedText.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+    } else if (formattedText.length > 6) {
+      formattedText = formattedText.replace(/(\d{2})(\d{5})/, '($1) $2');
+    } else if (formattedText.length > 2) {
+      formattedText = formattedText.replace(/(\d{2})/, '($1)');
+    }
+    setphone(formattedText);
+  };
+
+  if (user == null) { 
     return (
-      <View style={{ justifyContent: 'center', flex: 1,paddingHorizontal: 20,backgroundColor: '#f1f1f1',}}>
+      <View style={{ justifyContent: 'center', flex: 1, paddingHorizontal: 20, backgroundColor: '#f1f1f1', }}>
         <StatusBar backgroundColor='#f1f1f1' barStyle={"dark-content"} />
         <View style={{ justifyContent: 'center', alignItems: 'center', }}>
           <Avatar bg={argonTheme.COLORS.PRIMARY} w={150} h={150} size={72} cl='#fff' />
         </View>
         <Text style={{ fontSize: 22, marginVertical: 12, fontFamily: 'Inter_700Bold', color: argonTheme.COLORS.PRIMARY, textAlign: 'center', lineHeight: 24, }}>Faça login para acessar seu perfil</Text>
-        <View style={{ backgroundColor: argonTheme.COLORS.PRIMARY+20, padding: 12, borderRadius: 12, marginVertical: 12, }}>
-          <Text style={{ fontFamily: 'Inter_500Medium', fontSize: 16, lineHeight: 22, color: argonTheme.COLORS.PRIMARY, }}>
-          - Acompanhe suas corridas {'\n'}
-          - Acesse seus dados {'\n'}
-          - Acesse seus cupons {'\n'}
-          - Acesse seus pontos {'\n'}
-        </Text>
-        </View>
-        <View style={{ rowGap: 16, marginTop: 12, }}> 
+        
+        <View style={{ rowGap: 16, marginTop: 12, }}>
           <Button onPress={() => { navigation.navigate('Login') }} variant='secundary' text="Entrar" />
-          <Button onPress={openTerms} variant="ghost2" text='Acessar termos de uso' />
+          <Button onPress={() => { navigation.navigate('Register') }} variant='ghost2' text="Criar conta" />
+          <Button onPress={openTerms} variant="outline" text='Acessar termos de uso' />
         </View>
       </View>
     )
+
   }
 
   return (
     <Block flex style={{ backgroundColor: '#f1f1f1', }}>
       <ScrollView>
-        <View style={{ marginHorizontal: 20, }}>
-          <AuthContext.Consumer>
-            {({ signOut }) => (
-              <Fancy
-                color="red"
-                buttonColor="red"
-                visible={deleteModal}
-                icon_ios={'trash-bin-outline'} icon_android="trash-bin-outline"
-                title={Language.close_account} subtitle={Language.close_account_info}
-                button={Language.ok} closeAction={() => { setdeleteModal(false) }}
-                action={() => {
-                  API.deactivateUser((responseJson) => {
-                    setdeleteModal(false);
-                    signOut();
-                  }, () => {
-                  });
-                }}
-              ></Fancy>
-            )}
-          </AuthContext.Consumer>
-
-          <Avatar />
-          
+        <View style={{ marginHorizontal: 20, paddingTop: Platform.OS == 'android' ? 40 : 60, paddingBottom: 120, }}>
+          <Fancy
+            color="red"
+            buttonColor="red"
+            visible={deleteModal}
+            icon_ios={'trash-bin-outline'} icon_android="trash-bin-outline"
+            title={Language.close_account} subtitle={Language.close_account_info}
+            button={Language.ok} closeAction={() => { setdeleteModal(false) }}
+            action={handleDelete}
+          ></Fancy>
           <Block flex>
-            <Block middle style={{marginTop: 15,}}>
-              <Text bold size={28} color="#32325D">{user?.name}</Text>
-              <Text size={16} color="#32325D" style={{ marginBottom: 30 }}>{user?.email}</Text>
+            <Block style={{ marginTop: 20, }}>
+              <View style={{ marginVertical: 24, justifyContent: 'center', alignItems: 'center',  }}>
+                <Avatar bg={argonTheme.COLORS.PRIMARY} cl="#fff" w={150} h={150} size={72} />
+              </View>
+              <Input
+                value={name}
+                onChangeText={text => setname(text)}
+                placeholder='Nome'
+                iconContent={
+                  <Feather name="user" size={18} style={{ marginRight: 6, }} color={argonTheme.COLORS.ICON} />
+                }
+                style={{ borderWidth: 1, borderColor: argonTheme.COLORS.INPUT }}
+                onSubmitEditing={() => refphone.current?.focus()}
+              />
+              <Input
+                value={phone}
+                ref={refphone}
+                onChangeText={handlePhoneChange}
+                maxLength={15}
+                placeholder="Telefone"
+                keyboardType="phone-pad"
+                iconContent={
+                  <Feather name="phone" size={18} style={{ marginRight: 6, }} color={argonTheme.COLORS.ICON} />
+                }
+                style={{ borderWidth: 1, borderColor: argonTheme.COLORS.INPUT }}
+                onSubmitEditing={() => emailRef?.current?.focus()}
+              />
+              <Input
+                value={email}
+                borderless
+                ref={emailRef}
+                onChangeText={text => setemail(text)}
+                placeholder={"E-mail"}
+                keyboardType="email-address"
+                iconContent={
+                  <Feather name="mail" size={18} style={{ marginRight: 6, }} color={argonTheme.COLORS.ICON} />
+                }
+                style={{ borderWidth: 1, borderColor: argonTheme.COLORS.INPUT }}
+                onSubmitEditing={handleUpdate}
+              />
             </Block>
+
+
+
             <Block style={{ rowGap: 12, }}>
-              <AuthContext.Consumer>
-                {({ signOut }) => (
-                  <TouchableOpacity style={{ backgroundColor: argonTheme.COLORS.PRIMARY, justifyContent: 'center', alignItems: 'center', paddingVertical: 12, borderRadius: 8, }} onPress={signOut} >
-                  <Text bold size={16} color={argonTheme.COLORS.WHITE} center>Sair</Text>
-                </TouchableOpacity>
-                )}
-              </AuthContext.Consumer>
-              
+              <Button onPress={handleUpdate} variant="secundary" text='Atualizar' />
+              <View style={{ height: 2, backgroundColor: argonTheme.COLORS.BORDER, marginVertical: 12, }}/>
+              <Button variant="ghost2" text="Sair" onPress={handleExit} />
               <Button onPress={openTerms} variant="ghost2" text='Acessar termos de uso' />
-              <TouchableOpacity style={{ backgroundColor: '#ff000020', justifyContent: 'center', alignItems: 'center', paddingVertical: 12, borderRadius: 8, }} onPress={() => { setdeleteModal(true) }}>
-                <Text size={16} bold style={{ textAlign: "center", color: "red", }}>
-                  {Language.deleteAccount}
-                </Text>
-              </TouchableOpacity>
+              <Button onPress={() => { setdeleteModal(true) }} variant="red" text='Deletar conta' />
             </Block>
           </Block>
         </View>
@@ -123,51 +181,27 @@ export default function Profile({ navigation }) {
 
 
 
-
-const styles = StyleSheet.create({
-
-  profileContainer: {
-    width: width,
-    height: height,
-    padding: 0,
-    zIndex: 1
-  },
-  profileBackground: {
-    width: width,
-    height: height / 2
-  },
-  profileCard: {
-    padding: 20,
-    marginHorizontal: 20,
-    marginTop: 15,
-    borderRadius: 8,
-    backgroundColor: theme.COLORS.WHITE,
-  },
-  info: {
-    paddingHorizontal: 40
-  },
-  avatarContainer: {
-    position: "relative",
-    marginTop: -80
-  },
-  avatar: {
-    width: 124,
-    height: 124,
-    borderRadius: 62,
-    borderWidth: 0
-  },
-  
-  divider: {
-    width: "90%",
-    borderWidth: 1,
-    borderColor: "#E9ECEF"
-  },
-  thumb: {
-    borderRadius: 4,
-    marginVertical: 4,
-    alignSelf: "center",
-    width: thumbMeasure,
-    height: thumbMeasure
-  }
-});
-
+ /*
+ if (!user) {
+    return (
+      <View style={{ justifyContent: 'center', flex: 1, paddingHorizontal: 20, backgroundColor: '#f1f1f1', }}>
+        <StatusBar backgroundColor='#f1f1f1' barStyle={"dark-content"} />
+        <View style={{ justifyContent: 'center', alignItems: 'center', }}>
+          <Avatar bg={argonTheme.COLORS.PRIMARY} w={150} h={150} size={72} cl='#fff' />
+        </View>
+        <Text style={{ fontSize: 22, marginVertical: 12, fontFamily: 'Inter_700Bold', color: argonTheme.COLORS.PRIMARY, textAlign: 'center', lineHeight: 24, }}>Faça login para acessar seu perfil</Text>
+        <View style={{ backgroundColor: argonTheme.COLORS.PRIMARY + 20, padding: 12, borderRadius: 12, marginVertical: 12, }}>
+          <Text style={{ fontFamily: 'Inter_500Medium', fontSize: 16, lineHeight: 22, color: argonTheme.COLORS.PRIMARY, }}>
+            - Acompanhe suas corridas {'\n'}
+            - Acesse seus dados {'\n'}
+            - Acesse seus cupons {'\n'}
+            - Acesse seus pontos {'\n'}
+          </Text>
+        </View>
+        <View style={{ rowGap: 16, marginTop: 12, }}>
+          <Button onPress={() => { navigation.navigate('Login') }} variant='secundary' text="Entrar" />
+          <Button onPress={openTerms} variant="ghost2" text='Acessar termos de uso' />
+        </View>
+      </View>
+    )
+  } */

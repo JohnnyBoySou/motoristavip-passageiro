@@ -5,6 +5,8 @@
         "@assets/*": ["./assets/*"],
         "@theme/*": ["./theme/*"],
         "@api/*": ["./api/*"],
+        "@screens/*": ["./screens/*"],
+        "@components/*": ["./components/*"],
       }
     }
   }

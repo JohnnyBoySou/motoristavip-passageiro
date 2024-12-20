@@ -2,7 +2,7 @@ import React from "react";
 
 // set the defaults
 const AuthContext = React.createContext({
-  signIn: (data) => {},
+  signIn: () => {},
   signOut: () => {},
   signUp: () => {}
 });

@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
 import {
   ActivityIndicator,
-  AsyncStorage,
   StatusBar,
   View,
 } from 'react-native';
 import { argonTheme } from '../constants';
 import { MotiImage, MotiView } from 'moti';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Loading({ navigation }) {
   const isFocused = navigation.isFocused();
@@ -17,6 +17,8 @@ export default function Loading({ navigation }) {
         const telefone = await AsyncStorage.getItem('phone');
         if (userToken || telefone) {
           navigation.replace('Home');
+        } else {
+          navigation.replace('Onboarding');
         }
       } catch (error) {
         navigation.replace('Onboarding');        

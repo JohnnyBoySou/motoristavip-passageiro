@@ -19,7 +19,7 @@ export default function FindDriver({ navigation, route }) {
     const start_long = route?.params?.lng ? route.params.lng : '-48.693386'
     const end_lat = route?.params?.lat2 ? route.params.lat2 : '-26.487062';
     const end_long = route?.params?.lng2 ? route.params.lng2 : '-49.079829'
-   // const user_phone = route?.params?.phone ? route.params.phone : '11999999999';
+    // const user_phone = route?.params?.phone ? route.params.phone : '11999999999';
 
 
     const [user_phone, setuser_phone] = useState();
@@ -40,7 +40,6 @@ export default function FindDriver({ navigation, route }) {
         getDrivers()
     }, [])
 
-    if (loading) return <ActivityIndicator color="#fff" />
     return (
         <>
             <ScrollView style={{ backgroundColor: argonTheme.COLORS.PRIMARY }}>
@@ -55,17 +54,18 @@ export default function FindDriver({ navigation, route }) {
                             <AntDesign name="arrowleft" size={24} color="transparent" />
                         </TouchableOpacity>
                     </View>
-                    <View style={{}}>
-                        <FlatList horizontal showsHorizontalScrollIndicator={false}
-                            style={{ marginHorizontal: -20, marginVertical: 20, }}
-                            contentContainerStyle={{ columnGap: 12, paddingLeft: 20, paddingRight: 20, }}
-                            data={drivers} keyExtractor={item => item.id} renderItem={({ item }) => <CardOrder item={item}
-                                end={end} start={start}
-                                start_lat={start_lat} end_lat={end_lat}
-                                start_long={start_long} end_long={end_long}
-                                user_phone={user_phone}
-                            />} />
-                    </View>
+                    {loading ? <ActivityIndicator size="large" color="#fff" style={{ marginTop: 20, }} /> :
+                        <View>
+                            <FlatList showsHorizontalScrollIndicator={false}
+                                style={{  marginVertical: 20, }}
+                                contentContainerStyle={{ rowGap: 20, }}
+                                data={drivers} keyExtractor={item => item.id} renderItem={({ item }) => <CardOrder item={item}
+                                    end={end} start={start}
+                                    start_lat={start_lat} end_lat={end_lat}
+                                    start_long={start_long} end_long={end_long}
+                                    user_phone={user_phone}
+                                />} />
+                        </View>}
                 </View>
 
 
@@ -104,7 +104,7 @@ const CardOrder = ({ item, start, end, start_lat, start_long, end_lat, end_long,
 MOTORISTA: ${item.name}\n
 SEM MODELO\n
 PLACA`;
-                Linking.openURL(`https://wa.me/${item.phone}/?text=${encodeURIComponent(message)}`);
+                Linking.openURL(`https://wa.me/+55${item.phone}/?text=${encodeURIComponent(message)}`);
             }
             navigation.goBack();
         } catch (error) {
@@ -112,19 +112,13 @@ PLACA`;
         }
     };
 
-    /*
-    <View style={{ backgroundColor: '#d1d1d190', flexGrow: 1, height: 200, borderRadius: 12, justifyContent: 'center', alignItems: 'center', }}>
-                <Feather name="map" size={24} color="black" />
-            </View>
-    */
     return (
-        <View style={{ backgroundColor: '#FFF', width: 250, justifyContent: 'center', borderRadius: 12, padding: 12, }}>
-            
+        <View style={{ backgroundColor: '#FFF', justifyContent: 'center', borderRadius: 12, padding: 12, }}>
             <Text style={{ fontSize: 24, marginTop: 10, fontFamily: 'Inter_700Bold', color: argonTheme.COLORS.PRIMARY, lineHeight: 28, }}>{item?.ride_cost_formated}</Text>
-            <Text style={{ fontSize: 16, marginVertical: 6, fontFamily: 'Inter_500Medium', color: '#334F5C', lineHeight: 18, }}>Duração da corrida de {item?.ride_time}</Text>
+            <Text style={{ fontSize: 16, marginVertical: 6, fontFamily: 'Inter_500Medium', color: '#334F5C', lineHeight: 18, }}>Duração da corrida: {item?.ride_time}</Text>
             <Text style={{ fontSize: 14, fontFamily: 'Inter_300Regular', color: '#334F5C', lineHeight: 18, }}>{item?.distance} de distância ({item.duration_text})</Text>
-            <View style={{ flexDirection: 'row', marginTop: 12, alignItems: 'center', }}>
-                <Avatar w={42} h={42} size={18} bg="#f1f1f1" />
+            <View style={{ flexDirection: 'row', marginTop: 12, alignItems: 'center', padding: 12, borderRadius: 8, backgroundColor: argonTheme.COLORS.PRIMARY+10, }}>
+                <Avatar w={42} h={42} size={18} bg="#fff" />
                 <View style={{ flexDirection: 'column', marginLeft: 8, justifyContent: 'center', }}>
                     <Text style={{ fontSize: 14, fontFamily: 'Inter_600SemiBold', color: argonTheme.COLORS.PRIMARY, lineHeight: 14, }}>{item?.name?.length > 24 ? item?.name.slice(0, 24) + '...' : item.name}</Text>
                     <Text style={{ fontSize: 12, fontFamily: 'Inter_300Regular', color: argonTheme.COLORS.PRIMARY + 99, lineHeight: 14, }}>{item?.restorant.name?.length > 24 ? item?.restorant.name.slice(0, 24) + '...' : item.restorant.name}</Text>
@@ -139,55 +133,3 @@ PLACA`;
     )
 }
 
-const data = [
-    {
-        "id": "corrida1",
-        "name": "Fernanda Silva",
-        "price": "R$ 29,00",
-        "car": "RENAULT KWID",
-        "placa": "ABC-1234",
-        "km": "2.8 km",
-        "time": "4 min",
-        "finish": "10:28",
-    },
-    {
-        "id": "corrida2",
-        "name": "Leonardo Costa",
-        "price": "R$ 35,50",
-        "car": "HYUNDAI HB20",
-        "placa": "DEF-5678",
-        "km": "3.5 km",
-        "time": "6 min",
-        "finish": "10:30",
-    },
-    {
-        "id": "corrida3",
-        "name": "Priscila Andrade",
-        "price": "R$ 20,75",
-        "car": "TOYOTA COROLLA",
-        "placa": "GHI-9101",
-        "km": "1.5 km",
-        "time": "2 min",
-        "finish": "10:24",
-    },
-    {
-        "id": "corrida4",
-        "name": "Rafael Souza",
-        "price": "R$ 27,00",
-        "car": "NISSAN MARCH",
-        "placa": "JKL-2345",
-        "km": "2.3 km",
-        "time": "5 min",
-        "finish": "10:27",
-    },
-    {
-        "id": "corrida5",
-        "name": "Tatiana Moreira",
-        "price": "R$ 31,25",
-        "car": "CHEVROLET SPIN",
-        "placa": "MNO-6789",
-        "km": "3.7 km",
-        "time": "7 min",
-        "finish": "10:30",
-    }
-]

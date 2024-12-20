@@ -87,10 +87,10 @@ const ModalSelectPhone = ({ setmodalPhone, phone, setphone, handleNotLogin }) =>
                         <TextInput
                             value={phone}
                             onChangeText={handlePhoneChange}
-                            placeholder="Ex: (11) 99999-9999"
-                            placeholderTextColor='#fffFFF90'
                             keyboardType='phone-pad'
                             maxLength={15}
+                            placeholder="Ex: (11) 99999-9999"
+                            placeholderTextColor='#fffFFF90'
                             autoFocus
                             style={{ backgroundColor: 'transparent', fontSize: 28, marginBottom: 32, padding: 12, paddingHorizontal: 8, fontFamily: 'Inter_500Medium', color: '#fff', borderBottomWidth:2, borderBottomColor: '#FFFF',  marginVertical: 12, }}
                         />
