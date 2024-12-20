@@ -60,7 +60,7 @@ export default function OrderDetails({ navigation, route }) {
                         <Text style={{ fontSize: 20, fontFamily: 'Inter_700Bold', color: '#334F5C', lineHeight: 22, }}>{item?.delivery_address}</Text>
                     </View>
 
-                    <View style={{}}>
+                    <View style={{ paddingBottom: 40,}}>
                         <Text style={{ fontSize: 16, fontFamily: 'Inter_500Medium', color: '#334F5C', lineHeight: 20, }}>Motorista: </Text>
                         <View style={{ flexDirection: 'row', marginTop: 6, justifyContent: 'space-between', alignItems: 'center', }}>
                             <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', }}>
@@ -74,24 +74,6 @@ export default function OrderDetails({ navigation, route }) {
                                 <Feather name="phone" size={18} color='#FFF' />
                             </TouchableOpacity>
                         </View>
-                    </View>
-
-
-                    <View style={{ borderRadius: 24, overflow: 'hidden', width: '100%', height: 200, flex: 1, marginBottom: 50, justifyContent: 'center', alignItems: 'center', }}>
-                        <MapView
-                            style={{
-                                width: '100%',
-                                height: '100%',
-                            }}
-                            initialRegion={{
-                                latitude: parseInt(lat),
-                                longitude: parseInt(lng),
-                                latitudeDelta: 0.05,
-                                longitudeDelta: 0.05,
-                            }}
-                        >
-                            <Marker coordinate={{lat, lng,}}/>
-                        </MapView>
                     </View>
                 </View>
             </View>
@@ -108,3 +90,22 @@ export default function OrderDetails({ navigation, route }) {
         </ScrollView>
     )
 }
+/*
+<View style={{ borderRadius: 24, overflow: 'hidden', width: '100%', height: 200, flex: 1, marginBottom: 50, justifyContent: 'center', alignItems: 'center', }}>
+                        <MapView
+                            style={{
+                                width: '100%',
+                                height: '100%',
+                            }}
+                            initialRegion={{
+                                latitude: parseInt(lat),
+                                longitude: parseInt(lng),
+                                latitudeDelta: 0.05,
+                                longitudeDelta: 0.05,
+                            }}
+                        >
+                            <Marker coordinate={{lat, lng,}}/>
+                        </MapView>
+                    </View>
+
+*/

@@ -15,6 +15,7 @@ export default function Loading({ navigation }) {
       try {
         const userToken = await AsyncStorage.getItem('token');
         const telefone = await AsyncStorage.getItem('phone');
+
         if (userToken || telefone) {
           navigation.replace('Home');
         } else {

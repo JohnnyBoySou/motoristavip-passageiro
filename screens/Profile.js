@@ -100,6 +100,7 @@ export default function Profile({ navigation }) {
         <View style={{ rowGap: 16, marginTop: 12, }}>
           <Button onPress={() => { navigation.navigate('Login') }} variant='secundary' text="Entrar" />
           <Button onPress={() => { navigation.navigate('Register') }} variant='ghost2' text="Criar conta" />
+          <Button variant="ghost2" text="Sair" onPress={handleExit} />
           <Button onPress={openTerms} variant="outline" text='Acessar termos de uso' />
         </View>
       </View>

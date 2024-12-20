@@ -6,7 +6,7 @@ import {
   ScrollView
 } from "react-native";
 import { Block, Text } from "galio-framework";
-import { Input } from "@components/Input";
+import Input from "@components/Input";
 import { argonTheme, Language } from "../constants";
 
 import { Feather } from "@expo/vector-icons";
