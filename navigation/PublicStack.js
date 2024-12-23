@@ -39,6 +39,7 @@ export default function PublicStack() {
                 component={Loading}
                 options={{
                     headerShown: false,
+                    ...TransitionPresets.SlideFromRightIOS,
                  }}
             />
             <Stack.Screen
@@ -48,7 +49,7 @@ export default function PublicStack() {
                     headerShown: true,
                     headerMode: "screen",
                     header: ({ navigation, scene }) => (
-                        <View style={{ alignItems: 'center', flexDirection: 'row', backgroundColor: argonTheme.COLORS.PRIMARY, paddingHorizontal: 20, paddingTop: Platform.OS === 'ios' ? 50 : 20, paddingBottom:  0, }}>
+                        <View style={{ alignItems: 'center', flexDirection: 'row', backgroundColor: argonTheme.COLORS.PRIMARY, paddingHorizontal: 20, paddingTop: 20, paddingBottom:  0, }}>
                             <TouchableOpacity onPress={() => { navigation.goBack() }} style={{ width: 48, height: 48, justifyContent: 'center', alignItems: 'center', backgroundColor: '#fff', borderRadius: 100, }} >
                                 <AntDesign name="arrowleft" size={24} color={argonTheme.COLORS.PRIMARY} />
                             </TouchableOpacity>
@@ -117,7 +118,7 @@ export default function PublicStack() {
                     </View>
                     ),
                     headerTransparent: true,
-                    ...TransitionPresets.ModalSlideFromBottomIOS,
+                    ...TransitionPresets.SlideFromRightIOS,
                     cardStyle: { backgroundColor: "#F8F9FE" }
                 }}
             />
@@ -128,7 +129,7 @@ export default function PublicStack() {
                     headerShown: true,
                     headerMode: "screen",
                     header: ({ navigation, scene }) => (
-                        <View  style={{ backgroundColor: '#fff', flexDirection: 'row', alignItems: 'center', paddingHorizontal: 20, paddingTop: Platform.OS === 'ios' ? 50 : 20, paddingBottom: Platform.OS === 'ios' ? 20 : 0, }}>
+                        <View  style={{ backgroundColor: '#fff', flexDirection: 'row', alignItems: 'center', paddingHorizontal: 20, paddingTop: Platform.OS === 'ios' ? 50 : 20,  }}>
                             <TouchableOpacity onPress={() => { navigation.goBack() }} style={{ width: 48, height: 48, justifyContent: 'center', alignItems: 'center', backgroundColor: argonTheme.COLORS.PRIMARY, borderRadius: 100, }} >
                                 <AntDesign name="arrowleft" size={24} color="#fff" />
                             </TouchableOpacity>

@@ -14,7 +14,6 @@ export default function StartLocation({ navigation }) {
     async function getCurrentLocation() {
         let { status } = await Location.requestForegroundPermissionsAsync();
         if (status !== 'granted') {
-            console.log('Permission to access location was denied');
             if (Platform.OS === 'ios') {
                 Linking.openURL('app-settings:');
             } else {

@@ -1,8 +1,7 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   StyleSheet,
   ScrollView,
-  Dimensions,
   StatusBar,
   Image,
   Linking,
@@ -13,7 +12,7 @@ import { Block, Text } from "galio-framework";
 import Button  from '@theme/button'
 import Input from "@components/Input";
 
-import { argonTheme, Language } from "../constants";
+import { argonTheme, } from "../constants";
 
 import { Feather } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -29,6 +28,7 @@ const Login = ({ navigation }) => {
   const refPass = useRef();
 
   const handleLogin = async () => {
+    if (!email || !password) return seterror('Preencha todos os campos');
     setloading(true)
     try {
       await loginUser({ email: email, password: password });
@@ -55,7 +55,6 @@ const Login = ({ navigation }) => {
                 <Block style={{ marginHorizontal: 20, marginTop: 24, }}>
                   <Input
                     value={email}
-                    borderless
                     onChangeText={text => setEmail(text)}
                     placeholder={"E-mail"}
                     keyboardType="email-address"
@@ -68,7 +67,7 @@ const Login = ({ navigation }) => {
                     password
                     borderles
                     ref={refPass}
-                    placeholder={Language.password}
+                    placeholder='Senha'
                     onChangeText={text => setPassword(text)}
                     iconContent={
                       <Feather name="lock" size={18} style={{ marginRight: 6, }} color={argonTheme.COLORS.ICON} />
@@ -100,46 +99,6 @@ const Login = ({ navigation }) => {
 
 export default Login;
 
-
-const styles = StyleSheet.create({
-  registerContainer: {
-    
-  },
-  socialConnect: {
-    backgroundColor: argonTheme.COLORS.WHITE,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderColor: "#8898AA"
-  },
-  socialButtons: {
-    width: 120,
-    height: 40,
-    backgroundColor: "#fff",
-    shadowColor: argonTheme.COLORS.BLACK,
-    shadowOffset: {
-      width: 0,
-      height: 4
-    },
-    shadowRadius: 8,
-    shadowOpacity: 0.1,
-    elevation: 1
-  },
-  socialTextButtons: {
-    color: argonTheme.COLORS.PRIMARY,
-    fontWeight: "800",
-    fontSize: 14
-  },
-  inputIcons: {
-    marginRight: 12
-  },
-  passwordCheck: {
-    paddingLeft: 15,
-    paddingTop: 13,
-    paddingBottom: 30
-  },
-  createButton: {
-    flexGrow: 1,
-  }
-});
 
 /*
 useEffect(() => {

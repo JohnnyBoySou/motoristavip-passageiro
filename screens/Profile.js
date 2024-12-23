@@ -19,10 +19,7 @@ import Avatar from "@components/Avatar";
 import Button from "@theme/button";
 import Input from "@components/Input";
 import { getUser, logout } from "@api/auth";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const { width, height } = Dimensions.get("screen");
-const thumbMeasure = (width - 48 - 32) / 3;
 
 export default function Profile({ navigation }) {
   const [user, setuser] = useState();
@@ -45,18 +42,27 @@ export default function Profile({ navigation }) {
   const [deleteModal, setdeleteModal] = useState(false);
 
   const openTerms = () => {
-    Linking.openURL('https://motorista.vip/termos')
+    Linking.openURL('https://motoristavip.engenhariadigital.net/termos')
   }
 
+
+  const handleEdit = () => {
+    Linking.openURL('https://motorista.vip/profile')
+  }
  
 
   const handleDelete = async () => {
+    Linking.openURL('https://motoristavip.engenhariadigital.net/excluir-conta.html')
+    await logout()
+    setdeleteModal(false)
+    navigation.navigate('Onboarding');
+    /*
     try {
-      await disableUser()
+      //await disableUser()
       navigation.navigate('Onboarding');
     } catch (error) {
       console.log(error)
-    }
+    }*/
   }
   const handleExit = async () => {
     try {
@@ -130,6 +136,7 @@ export default function Profile({ navigation }) {
                 value={name}
                 onChangeText={text => setname(text)}
                 placeholder='Nome'
+                disabled={true}
                 iconContent={
                   <Feather name="user" size={18} style={{ marginRight: 6, }} color={argonTheme.COLORS.ICON} />
                 }
@@ -143,6 +150,7 @@ export default function Profile({ navigation }) {
                 maxLength={15}
                 placeholder="Telefone"
                 keyboardType="phone-pad"
+                disabled={true}
                 iconContent={
                   <Feather name="phone" size={18} style={{ marginRight: 6, }} color={argonTheme.COLORS.ICON} />
                 }
@@ -153,6 +161,7 @@ export default function Profile({ navigation }) {
                 value={email}
                 borderless
                 ref={emailRef}
+                disabled={true}
                 onChangeText={text => setemail(text)}
                 placeholder={"E-mail"}
                 keyboardType="email-address"
@@ -160,14 +169,14 @@ export default function Profile({ navigation }) {
                   <Feather name="mail" size={18} style={{ marginRight: 6, }} color={argonTheme.COLORS.ICON} />
                 }
                 style={{ borderWidth: 1, borderColor: argonTheme.COLORS.INPUT }}
-                onSubmitEditing={handleUpdate}
+                onSubmitEditing={handleEdit}
               />
             </Block>
 
 
 
             <Block style={{ rowGap: 12, }}>
-              <Button onPress={handleUpdate} variant="secundary" text='Atualizar' />
+              <Button onPress={handleEdit} variant="secundary" text='Editar dados' />
               <View style={{ height: 2, backgroundColor: argonTheme.COLORS.BORDER, marginVertical: 12, }}/>
               <Button variant="ghost2" text="Sair" onPress={handleExit} />
               <Button onPress={openTerms} variant="ghost2" text='Acessar termos de uso' />

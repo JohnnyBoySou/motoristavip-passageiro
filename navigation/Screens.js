@@ -94,7 +94,6 @@ export default function App() {
       },
       signUp: async data => {
         API.registerUser(data.name,data.email,data.password,data.phone,(responseJson)=>{
-          console.log(JSON.stringify(responseJson));
            if(responseJson.status){
               //User ok - but needs admin approval
               User.logout(()=>{

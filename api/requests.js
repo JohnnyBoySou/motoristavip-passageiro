@@ -12,7 +12,6 @@ export const findDriver = async (params) => {
   }).toString();
   try {
     const response = await axios.get(`${url}?${queryParams}`);
-    console.log('Find Taxi response:', response.data);
     return response.data;
   } catch (error) {
     console.error('Error finding taxi:', error.response?.data || error.message);
@@ -50,7 +49,6 @@ export const createOrder = async (params) => {
     pickup_lng,
     userid
   }).toString();
-  console.log(url + queryParams)
   try {
     const response = await axios.post(`${url}?${queryParams}`);
     return response.data;

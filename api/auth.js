@@ -43,6 +43,7 @@ export async function registerUser(params) {
       }
     }
   } catch (error) {
+    console.log(error)
     throw error.response.data.error;
   }
 }

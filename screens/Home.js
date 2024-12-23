@@ -60,7 +60,7 @@ export default function Home({ navigation }) {
                 <View style={{ paddingTop: Platform.OS === 'ios' ? 50 : 20, paddingHorizontal: 20, }}>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', }}>
                         <Text style={{ fontSize: 28, fontFamily: 'Inter_700Bold', color: argonTheme.COLORS.PRIMARY, lineHeight: 30, }}>Vamos para {'\n'}onde agora?</Text>
-                        <TouchableOpacity onPress={() => { navigation.navigate('Profile') }} style={{}}>
+                        <TouchableOpacity onPress={() => { navigation.push('Profile') }} style={{}}>
                             <Avatar bg="#fff" />
                         </TouchableOpacity>
                     </View>
@@ -143,14 +143,14 @@ const CardOrder = ({ item }) => {
     const navigation = useNavigation()
     return (
         <TouchableOpacity onPress={() => {navigation.navigate('OrderDetails', { item: item })}} >
-            <View style={{ backgroundColor: '#FFF', width: 220, justifyContent: 'center', borderRadius: 12, padding: 16, }}>
+            <View style={{ backgroundColor: '#FFF', width: 250, justifyContent: 'center', borderRadius: 12, padding: 16, }}>
                 <View style={{ flexDirection: 'row', alignItems: 'flex-end', marginBottom: 16, }}>
                     <Text style={{ fontSize: 20, fontFamily: 'Inter_700Bold', color: argonTheme.COLORS.PRIMARY, lineHeight: 22, }}>R$ {item?.delivery_price}</Text>
                     <Text style={{ fontSize: 14, fontFamily: 'Inter_300Regular', color: '#334F5C', lineHeight: 18, marginBottom: 2, marginLeft: 4, }}>({item?.distance} km)</Text>
                 </View>
-                <Text style={{ fontSize: 16, fontFamily: 'Inter_500Medium', color: '#334F5C', lineHeight: 18, }}>{item?.time_created}</Text>
+                <Text style={{ fontSize: 16, fontFamily: 'Inter_500Medium', color: '#334F5C', lineHeight: 18, width: 220, }}>{item?.time_created}</Text>
                 <View style={{ flexDirection: 'row', marginTop: 12, }}>
-                    <Avatar w={42} h={42} size={18} bg="#f1f1f1" />
+                    <Avatar w={42} h={42} size={18} bg="#f1f1f1" src={driver?.avatar} />
                     <View style={{ flexDirection: 'column', marginLeft: 8, justifyContent: 'center', }}>
                         <Text style={{ fontSize: 14, fontFamily: 'Inter_600SemiBold', color: argonTheme.COLORS.PRIMARY, lineHeight: 14, }}>{driver?.name?.length > 24 ? driver?.name.slice(0, 24) + '...' : driver.name}</Text>
                         <Text style={{ fontSize: 12, fontFamily: 'Inter_300Regular', color: argonTheme.COLORS.PRIMARY + 99, lineHeight: 14, }}>{item?.restorant.name?.length > 24 ? item?.restorant.name.slice(0, 24) + '...' : item.restorant.name}</Text>

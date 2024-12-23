@@ -66,8 +66,6 @@ async function publicAPI(method,path,data,callback,errorCallback){
       if(responseJson.errMsg!=undefined){
         message+=" "+responseJson.errMsg;
       }
-      console.log(message);
-      console.log(responseJson);
       errorCallback(message);
    } 
  }).catch(error => {

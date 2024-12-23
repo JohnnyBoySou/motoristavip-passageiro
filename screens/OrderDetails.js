@@ -1,11 +1,8 @@
 import React from 'react';
 import { AntDesign, Feather } from '@expo/vector-icons';
-import { View, Text, TouchableOpacity, Dimensions, Platform, Linking, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity,  Linking, ScrollView } from 'react-native';
 import { argonTheme } from '../constants';
-import Button from '@theme/button';
 import Avatar from '@components/Avatar';
-import MapView, { Marker } from 'react-native-maps';
-
 
 export default function OrderDetails({ navigation, route }) {
 
@@ -16,8 +13,6 @@ export default function OrderDetails({ navigation, route }) {
         Linking.openURL(`tel:${driver?.phone}`);
     }
 
-    const lat = item?.delivery_lat;
-    const lng = item?.delivery_lng;
 
     return (
         <ScrollView style={{ backgroundColor: argonTheme.COLORS.PRIMARY, flex: 1, paddingTop: 70, }}>
@@ -60,11 +55,11 @@ export default function OrderDetails({ navigation, route }) {
                         <Text style={{ fontSize: 20, fontFamily: 'Inter_700Bold', color: '#334F5C', lineHeight: 22, }}>{item?.delivery_address}</Text>
                     </View>
 
-                    <View style={{ paddingBottom: 40,}}>
+                    <View style={{ paddingBottom: 40, }}>
                         <Text style={{ fontSize: 16, fontFamily: 'Inter_500Medium', color: '#334F5C', lineHeight: 20, }}>Motorista: </Text>
                         <View style={{ flexDirection: 'row', marginTop: 6, justifyContent: 'space-between', alignItems: 'center', }}>
                             <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', }}>
-                                <Avatar w={42} h={42} size={18} bg="#fff" />
+                                <Avatar w={42} h={42} size={18} bg="#fff" src={driver?.avatar}/>
                                 <View style={{ flexDirection: 'column', marginLeft: 8, justifyContent: 'center', }}>
                                     <Text style={{ fontSize: 14, fontFamily: 'Inter_600SemiBold', color: argonTheme.COLORS.PRIMARY, lineHeight: 14, }}>{driver?.name?.length > 24 ? driver?.name.slice(0, 24) + '...' : driver.name}</Text>
                                     <Text style={{ fontSize: 12, fontFamily: 'Inter_300Regular', color: argonTheme.COLORS.PRIMARY + 99, lineHeight: 14, }}>{item?.restorant.name?.length > 24 ? item?.restorant.name.slice(0, 24) + '...' : item.restorant.name}</Text>
@@ -86,7 +81,7 @@ export default function OrderDetails({ navigation, route }) {
                 <View style={{ width: 46, height: 46, borderRadius: 100, backgroundColor: argonTheme.COLORS.PRIMARY, }} />
                 <View style={{ width: 46, height: 46, borderRadius: 100, backgroundColor: argonTheme.COLORS.PRIMARY, }} />
             </View>
-            <View style={{ height: 100, }}/>
+            <View style={{ height: 100, }} />
         </ScrollView>
     )
 }

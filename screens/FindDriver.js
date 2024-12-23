@@ -21,7 +21,6 @@ export default function FindDriver({ navigation, route }) {
     const end_long = route?.params?.lng2 ? route.params.lng2 : '-49.079829'
     // const user_phone = route?.params?.phone ? route.params.phone : '11999999999';
 
-
     const [user_phone, setuser_phone] = useState();
     const getDrivers = async () => {
         try {
@@ -79,6 +78,7 @@ export default function FindDriver({ navigation, route }) {
 
 const CardOrder = ({ item, start, end, start_lat, start_long, end_lat, end_long, user_phone }) => {
     const navigation = useNavigation();
+
     const params = {
         issd: 1,
         driver_id: item.id, // ID do motorista
@@ -118,7 +118,7 @@ PLACA`;
             <Text style={{ fontSize: 16, marginVertical: 6, fontFamily: 'Inter_500Medium', color: '#334F5C', lineHeight: 18, }}>Duração da corrida: {item?.ride_time}</Text>
             <Text style={{ fontSize: 14, fontFamily: 'Inter_300Regular', color: '#334F5C', lineHeight: 18, }}>{item?.distance} de distância ({item.duration_text})</Text>
             <View style={{ flexDirection: 'row', marginTop: 12, alignItems: 'center', padding: 12, borderRadius: 8, backgroundColor: argonTheme.COLORS.PRIMARY+10, }}>
-                <Avatar w={42} h={42} size={18} bg="#fff" />
+                <Avatar w={42} h={42} size={18} bg="#fff" src={item.avatar} />
                 <View style={{ flexDirection: 'column', marginLeft: 8, justifyContent: 'center', }}>
                     <Text style={{ fontSize: 14, fontFamily: 'Inter_600SemiBold', color: argonTheme.COLORS.PRIMARY, lineHeight: 14, }}>{item?.name?.length > 24 ? item?.name.slice(0, 24) + '...' : item.name}</Text>
                     <Text style={{ fontSize: 12, fontFamily: 'Inter_300Regular', color: argonTheme.COLORS.PRIMARY + 99, lineHeight: 14, }}>{item?.restorant.name?.length > 24 ? item?.restorant.name.slice(0, 24) + '...' : item.restorant.name}</Text>

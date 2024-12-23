@@ -39,6 +39,8 @@ const Input = forwardRef((props, ref) => {
         onBlur={() => setselect(false)}
         value={props.value}
         maxLength={props.maxLength}
+        editable={props.disabled ? false : true}
+        selectTextOnFocus={props.disabled ? false : true}  
         keyboardType={props.keyboardType}
         secureTextEntry={password}
         returnKeyType={props.returnKeyType || "next"} // Define o tipo de tecla
