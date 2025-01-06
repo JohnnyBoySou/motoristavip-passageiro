@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ScrollView, View, TouchableOpacity, StatusBar, Platform, FlatList, ActivityIndicator, Linking } from 'react-native';
 import { Text } from 'galio-framework'
 import { argonTheme } from '../constants';
-import { AntDesign, Feather } from '@expo/vector-icons';
+import { AntDesign, Feather, MaterialIcons } from '@expo/vector-icons';
 import Avatar from '../components/Avatar';
 
 import { findDriver, createOrder } from '@api/requests';
@@ -30,7 +30,7 @@ export default function FindDriver({ navigation, route }) {
             setride(res)
             setdrivers(res.drivers)
         } catch (error) {
-
+            console.log(error)
         } finally {
             setloading(false)
         }
@@ -56,14 +56,27 @@ export default function FindDriver({ navigation, route }) {
                     {loading ? <ActivityIndicator size="large" color="#fff" style={{ marginTop: 20, }} /> :
                         <View>
                             <FlatList showsHorizontalScrollIndicator={false}
-                                style={{  marginVertical: 20, }}
+                                style={{ marginVertical: 20, }}
                                 contentContainerStyle={{ rowGap: 20, }}
                                 data={drivers} keyExtractor={item => item.id} renderItem={({ item }) => <CardOrder item={item}
                                     end={end} start={start}
                                     start_lat={start_lat} end_lat={end_lat}
                                     start_long={start_long} end_long={end_long}
                                     user_phone={user_phone}
-                                />} />
+                                />}
+                                ListEmptyComponent={
+                                    <View style={{ alignItems: 'center', marginTop: 20, backgroundColor: '#fff', width: 300, rowGap: 12, alignSelf: 'center', paddingVertical: 20, justifyContent: 'center', alignItems: 'center', borderRadius: 12, }}>
+                                        <MaterialIcons name="car-crash" size={52} color={argonTheme.COLORS.PRIMARY} />
+                                        <Text style={{ fontSize: 24, fontFamily: 'Inter_700Bold', color: argonTheme.COLORS.PRIMARY, lineHeight: 24, textAlign: 'center', }}>Sem motoristas disponíveis.</Text>
+                                        <Text style={{ fontSize: 16, fontFamily: 'Inter_500Medium', color: argonTheme.COLORS.PRIMARY+99, lineHeight: 18, }}>No momento, não há motoristas disponíveis em sua localização.</Text>
+                                        <TouchableOpacity onPress={() => {navigation.navigate('StartLocation')}}   style={{ backgroundColor: argonTheme.COLORS.PRIMARY, marginTop: 6, borderRadius: 8, padding: 14, width: 250, justifyContent: 'center', alignItems: 'center', }}>
+                {loading ? <ActivityIndicator size="small" color="#fff" /> :
+                    <Text style={{ color: '#fff', alignSelf: 'center', textAlign: 'center', fontFamily: 'Inter_600SemiBold', fontWeight: 900, fontSize: 16, lineHeight: 20, }}>
+                        Alterar local
+                    </Text>}
+            </TouchableOpacity>
+                                    </View>}
+                            />
                         </View>}
                 </View>
 
@@ -78,6 +91,7 @@ export default function FindDriver({ navigation, route }) {
 
 const CardOrder = ({ item, start, end, start_lat, start_long, end_lat, end_long, user_phone }) => {
     const navigation = useNavigation();
+    const [loading, setloading] = useState(false);
 
     const params = {
         issd: 1,
@@ -92,6 +106,7 @@ const CardOrder = ({ item, start, end, start_lat, start_long, end_lat, end_long,
         pickup_lng: start_long // Longitude de coleta
     };
     const handleConfirmRide = async () => {
+        setloading(true)
         try {
             const res = await createOrder(params);
             if (res) {
@@ -109,6 +124,8 @@ PLACA`;
             navigation.goBack();
         } catch (error) {
             console.error(error);
+        } finally {
+            setloading(false)
         }
     };
 
@@ -117,17 +134,18 @@ PLACA`;
             <Text style={{ fontSize: 24, marginTop: 10, fontFamily: 'Inter_700Bold', color: argonTheme.COLORS.PRIMARY, lineHeight: 28, }}>{item?.ride_cost_formated}</Text>
             <Text style={{ fontSize: 16, marginVertical: 6, fontFamily: 'Inter_500Medium', color: '#334F5C', lineHeight: 18, }}>Duração da corrida: {item?.ride_time}</Text>
             <Text style={{ fontSize: 14, fontFamily: 'Inter_300Regular', color: '#334F5C', lineHeight: 18, }}>{item?.distance} de distância ({item.duration_text})</Text>
-            <View style={{ flexDirection: 'row', marginTop: 12, alignItems: 'center', padding: 12, borderRadius: 8, backgroundColor: argonTheme.COLORS.PRIMARY+10, }}>
+            <View style={{ flexDirection: 'row', marginTop: 12, alignItems: 'center', padding: 12, borderRadius: 8, backgroundColor: argonTheme.COLORS.PRIMARY + 10, }}>
                 <Avatar w={42} h={42} size={18} bg="#fff" src={item.avatar} />
                 <View style={{ flexDirection: 'column', marginLeft: 8, justifyContent: 'center', }}>
                     <Text style={{ fontSize: 14, fontFamily: 'Inter_600SemiBold', color: argonTheme.COLORS.PRIMARY, lineHeight: 14, }}>{item?.name?.length > 24 ? item?.name.slice(0, 24) + '...' : item.name}</Text>
                     <Text style={{ fontSize: 12, fontFamily: 'Inter_300Regular', color: argonTheme.COLORS.PRIMARY + 99, lineHeight: 14, }}>{item?.restorant.name?.length > 24 ? item?.restorant.name.slice(0, 24) + '...' : item.restorant.name}</Text>
                 </View>
             </View>
-            <TouchableOpacity onPress={handleConfirmRide} style={{ backgroundColor: argonTheme.COLORS.PRIMARY, marginTop: 12, borderRadius: 8, padding: 14, flexGrow: 1, justifyContent: 'center', alignItems: 'center', }}>
-                <Text style={{ color: '#fff', alignSelf: 'center', textAlign: 'center', fontFamily: 'Inter_600SemiBold', fontWeight: 900, fontSize: 16, lineHeight: 20, }}>
-                    Confirmar
-                </Text>
+            <TouchableOpacity disabled={loading} onPress={handleConfirmRide} style={{ backgroundColor: argonTheme.COLORS.PRIMARY, marginTop: 12, borderRadius: 8, padding: 14, flexGrow: 1, justifyContent: 'center', alignItems: 'center', }}>
+                {loading ? <ActivityIndicator size="small" color="#fff" /> :
+                    <Text style={{ color: '#fff', alignSelf: 'center', textAlign: 'center', fontFamily: 'Inter_600SemiBold', fontWeight: 900, fontSize: 16, lineHeight: 20, }}>
+                        Confirmar
+                    </Text>}
             </TouchableOpacity>
         </View>
     )

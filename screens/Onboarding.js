@@ -36,12 +36,10 @@ export default function Onboarding({ navigation }) {
         }
     }
 
-    
-
     return (
         <View style={{ backgroundColor: argonTheme.COLORS.PRIMARY, alignItems: 'center', flex: 1, }}>
             <StatusBar barStyle="default" backgroundColor={argonTheme.COLORS.PRIMARY} />
-            <MotiImage from={{ opacity: 0, translateY: 30, }} animate={{ opacity: 1, translateY: 0, }} source={require('../assets/icon.png')} style={{ width: 200, height: 200, objectFit: 'contain', marginTop: 60, }} />
+            <MotiImage from={{ opacity: 0, translateY: 30, }} animate={{ opacity: 1, translateY: 0, }} source={require('../assets/icon2.png')} style={{ width: 200, height: 200, objectFit: 'contain', marginTop: 60, }} />
             <MotiView from={{ opacity: 0, translateY: 30, }} animate={{ opacity: 1, translateY: 0, }} transition={{ delay: 400, type: 'timing' }} >
                 <Text style={{ fontSize: 28, marginVertical: 12, fontFamily: 'Inter_700Bold', color: '#FFF', textAlign: 'center', lineHeight: 30, marginHorizontal: 40, }}>Corridas fáceis, atendimento ideal!</Text>
                 <Text style={{ fontSize: 16, marginVertical: 12, marginBottom: 80, fontFamily: 'Inter_400Regular', color: '#FFF', textAlign: 'center', lineHeight: 20, marginHorizontal: 40, }}>Peça uma corrida em poucos cliques, com profissionais especializados em te atender bem.</Text>

@@ -57,7 +57,7 @@ export default function PublicStack() {
                         </View>
                     ),
                     headerTransparent: true,
-                    ...TransitionPresets.ModalPresentationIOS,
+                    ...TransitionPresets.SlideFromRightIOS,
                 }}
             />
             <Stack.Screen
@@ -65,7 +65,7 @@ export default function PublicStack() {
                 component={StartLocation}
                 options={{
                     headerShown: false,
-                    ...TransitionPresets.ModalPresentationIOS
+                    ...TransitionPresets.SlideFromRightIOS
                  }}
             />
             <Stack.Screen
@@ -73,7 +73,7 @@ export default function PublicStack() {
                 component={EndLocation}
                 options={{
                     headerShown: false,
-                    ...TransitionPresets.ModalPresentationIOS
+                    ...TransitionPresets.SlideFromRightIOS
                  }}
             />
             <Stack.Screen
@@ -100,7 +100,7 @@ export default function PublicStack() {
                 options={{
                     gestureEnabled: true,
                     headerShown: false, 
-                    ...TransitionPresets.ModalPresentationIOS
+                    ...TransitionPresets.SlideFromRightIOS
                  }}
             />
             <Stack.Screen

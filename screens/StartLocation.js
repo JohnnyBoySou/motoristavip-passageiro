@@ -1,4 +1,4 @@
-import React  from 'react';
+import React from 'react';
 import * as Location from 'expo-location';
 import { AntDesign, Feather } from '@expo/vector-icons';
 import { View, Text, TouchableOpacity, Dimensions, Platform, Linking } from 'react-native';
@@ -53,7 +53,7 @@ export default function StartLocation({ navigation }) {
                     <View style={{ marginHorizontal: 12, }}>
                         <PlacesInput
                             queryTypes="address"
-                            placeHolder="Ex: Rua Rudofo Bosco, Centro, Campinas - SP"
+                            placeHolder="Ex: Rua Rodolfo Bosco, Centro, Campinas - SP"
                             stylesInput={{ backgroundColor: '#FFF', fontFamily: 'Inter_400Regular', width: '100%', }}
                             googleApiKey='AIzaSyCn39Ap3hDfetoQBDLVI05mhyFQRb8q420'
                             queryCountries={['br']}

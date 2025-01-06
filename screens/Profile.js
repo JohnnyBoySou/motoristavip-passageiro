@@ -1,17 +1,14 @@
 import React, { useState, useEffect } from "react";
 import {
-  StyleSheet,
-  Dimensions,
   ScrollView,
   Platform,
-  TouchableOpacity,
   View,
   Linking,
   StatusBar,
 } from "react-native";
 
-import { Block, Text, theme } from "galio-framework";
-import { AntDesign, Feather } from '@expo/vector-icons';
+import { Block, Text } from "galio-framework";
+import { Feather } from '@expo/vector-icons';
 import { Language, argonTheme } from "../constants";
 import Fancy from "@components/Fancy"
 
@@ -55,24 +52,15 @@ export default function Profile({ navigation }) {
     Linking.openURL('https://motoristavip.engenhariadigital.net/excluir-conta.html')
     await logout()
     setdeleteModal(false)
-    navigation.navigate('Onboarding');
-    /*
-    try {
-      //await disableUser()
-      navigation.navigate('Onboarding');
-    } catch (error) {
-      console.log(error)
-    }*/
+    navigation.replace('Onboarding');
   }
   const handleExit = async () => {
     try {
       await logout()
-      navigation.navigate('Onboarding');
+      navigation.replace('Onboarding');
     } catch (error) {
       console.log(error)
     }
-  }
-  const handleUpdate = () => {
   }
 
   const [phone, setphone] = useState();

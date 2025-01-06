@@ -48,7 +48,7 @@ const Login = ({ navigation }) => {
           <Block style={{backgroundColor: "#FFF",paddingVertical: 30, borderRadius: 12, width: '100%', paddingHorizontal: 20,}}>
             <Block flex >
               <Block >
-                <Image source={require('../assets/icon.png')} style={{ width: 124, height: 124, objectFit: 'contain', backgroundColor: '#d1d1d1', alignSelf: 'center', borderRadius: 12, marginBottom: 12, }} />
+                <Image source={require('../assets/icon2.png')} style={{ width: 124, height: 124, objectFit: 'contain', backgroundColor: '#d1d1d1', alignSelf: 'center', borderRadius: 12, marginBottom: 12, }} />
                 <Text bold size={18} center>motorista<Text bold size={18} center color='#10B981'>.</Text>vip</Text>
               </Block>
               <Block flex >
